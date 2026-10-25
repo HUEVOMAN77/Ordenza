@@ -133,6 +133,7 @@ dependencies {
     implementation(libs.lottie.compose)
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.logcat)
+    implementation(libs.core.splashscreen)
 
     testImplementation(libs.junit)
     androidTestImplementation(libs.androidx.test.junit)

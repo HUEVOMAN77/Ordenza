@@ -106,16 +106,18 @@ jobs:
             ./gradlew connectedDebugAndroidTest --stacktrace
             mkdir -p screenshots
             ./gradlew installDebug
-            adb shell monkey -p io.github.huevoman77.ordenza.debug -c android.intent.category.LAUNCHER 1
-            sleep 1
-            adb exec-out screencap -p > screenshots/1-splash.png
+            adb shell am start -W -n io.github.huevoman77.ordenza.debug/dev.spikeysanju.einsen.MainActivity
+            adb exec-out screencap -p > screenshots/1-launch.png
             sleep 5
             adb exec-out screencap -p > screenshots/2-dashboard.png
-            adb shell input keyevent KEYCODE_HOME
-            sleep 2
-            adb shell input swipe 540 1800 540 300 300
+            adb shell input tap 1006 137
             sleep 3
-            adb exec-out screencap -p > screenshots/3-app-drawer.png
+            adb exec-out screencap -p > screenshots/3-about.png
+            adb shell input keyevent KEYCODE_HOME
+            sleep 3
+            adb shell input swipe 540 2000 540 700 600
+            sleep 4
+            adb exec-out screencap -p > screenshots/4-app-drawer.png
 
       - name: Upload screenshots
         if: always()

@@ -34,4 +34,5 @@
     // dark mode color
     <color name="black_dark">#162544</color>
     <color name="bg">#0C1B3A</color>
+    <color name="ordenza_navy">#16213E</color>
 </resources>
