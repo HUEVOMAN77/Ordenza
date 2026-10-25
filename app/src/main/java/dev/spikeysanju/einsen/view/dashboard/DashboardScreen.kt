@@ -208,17 +208,11 @@ fun DashboardScreen(
             }
             is ViewState.Success -> {
 
-                // this will split list into urgent on left & important on right
-                val (urgent, important) = allTaskList.task.partition { it.priority.name == Priority.URGENT.name }
-
-                // this will split list into urgent on left & important on right
-                val (delegate, dump) = allTaskList.task.partition { it.priority.name == Priority.DELEGATE.name }
-
-                // setting task count to mutable state
-                urgentCount = urgent.count { it.priority.name == Priority.URGENT.name }
-                importantCount = important.count { it.priority.name == Priority.IMPORTANT.name }
-                delegateCount = delegate.count { it.priority.name == Priority.DELEGATE.name }
-                dumpCount = dump.count { it.priority.name == Priority.DUMP.name }
+                // Optimized: count tasks by priority in a single pass
+                urgentCount = allTaskList.task.count { it.priority == Priority.URGENT }
+                importantCount = allTaskList.task.count { it.priority == Priority.IMPORTANT }
+                delegateCount = allTaskList.task.count { it.priority == Priority.DELEGATE }
+                dumpCount = allTaskList.task.count { it.priority == Priority.DUMP }
 
                 LazyColumn(
                     state = listState,

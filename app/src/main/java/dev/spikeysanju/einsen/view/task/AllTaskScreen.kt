@@ -34,6 +34,7 @@ import androidx.compose.material.Text
 import androidx.compose.material.TopAppBar
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
+import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -90,6 +91,22 @@ fun AllTaskScreen(
                         Icon(
                             painter = painterResource(id = R.drawable.ic_back),
                             contentDescription = stringResource(R.string.back_button),
+                            tint = AppTheme.colors.primary
+                        )
+                    }
+                },
+                actions = {
+                    IconButton(onClick = {
+                        viewModel.getAllTask()
+                        // log event to firebase
+                        val refreshBundle = bundleOf(
+                            "refresh_button" to "Clicked Refresh button from All Task"
+                        )
+                        viewModel.firebaseLogEvent("all_task_refresh_button", refreshBundle)
+                    }) {
+                        Icon(
+                            Icons.Filled.Refresh,
+                            contentDescription = stringResource(R.string.text_refresh),
                             tint = AppTheme.colors.primary
                         )
                     }

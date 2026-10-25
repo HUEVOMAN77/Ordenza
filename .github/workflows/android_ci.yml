@@ -64,6 +64,16 @@ jobs:
           path: dist/*.apk
           retention-days: 30
 
+      - name: Publish APK to GitHub Release (master branch)
+        if: github.ref == 'refs/heads/master'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh release create master-latest dist/Ordenza-release.apk dist/Ordenza-debug.apk \
+            --title "Ordenza Master Build" \
+            --notes "Auto-generated release from master branch push.\n\n- Release APK: dist/Ordenza-release.apk\n- Debug APK: dist/Ordenza-debug.apk" \
+            --latest 2>/dev/null || gh release upload master-latest dist/Ordenza-release.apk dist/Ordenza-debug.apk --clobber
+
       - name: Publish GitHub Release (tags only)
         if: startsWith(github.ref, 'refs/tags/v')
         uses: softprops/action-gh-release@v2
