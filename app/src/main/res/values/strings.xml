@@ -68,14 +68,14 @@
     <string name="text_complete">Complete</string>
     <string name="text_incomplete">Incomplete</string>
     <string name="text_all_emoji">All Emoji</string>
-    <string name="text_message_share">Title: %s %s \n\nDescription: %s \n\nCategory: %s \n\n\Priority: %s \n\n\nCreatedAt: %s \n\nVisit: https://github.com/Spikeysanju/Einsen</string>
+    <string name="text_message_share">Title: %s %s \n\nDescription: %s \n\nCategory: %s \n\n\Priority: %s \n\n\nCreatedAt: %s \n\nVisit: https://github.com/HUEVOMAN77/Einsen</string>
 
     <!--   About-->
     <string name="text_attribution_and_license"><![CDATA[Attribution & License]]></string>
     <string name="text_visit">Visit</string>
     <string name="text_author">Author</string>
-    <string name="text_author_name">Made with 🍄 Spikey Sanju</string>
-    <string name="text_repo_link">https://www.github.com/Spikeysanju/Einsen</string>
+    <string name="text_author_name">Made with 🍄 Spikey Sanju · Maintained by HUEVOMAN77</string>
+    <string name="text_repo_link">https://github.com/HUEVOMAN77/Einsen</string>
     <string name="text_license">Licensed Under Apache 2.0</string>
     <string name="text_webview">WebView</string>
     <string name="text_einsen_logo">Einsen logo</string>
@@ -88,5 +88,12 @@
     <!--Notification Channel-->
     <string name="reminder_channel_id" translatable="false">reminders</string>
     <string name="reminder_channel_name" translatable="false">Reminders</string>
+    <string name="reminder_due_in_one_hour">Task due in 1 hour</string>
+
+    <!--Messages-->
+    <string name="text_fill_required_fields">Please add at least a title and a category</string>
+    <string name="text_task_added">Task added successfully</string>
+    <string name="text_task_updated">Task updated successfully!</string>
+    <string name="text_try_another_term">Please try searching with another term.\n  Ex -> star_struck</string>
 
 </resources>

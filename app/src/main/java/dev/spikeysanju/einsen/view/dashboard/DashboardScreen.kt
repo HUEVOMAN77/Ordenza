@@ -50,7 +50,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.components.DashboardCardItem
 import dev.spikeysanju.einsen.model.task.Priority
@@ -72,8 +72,8 @@ fun DashboardScreen(
     LaunchedEffect(key1 = Unit) {
         // log event to firebase
         val dashboardScreenComposable = bundleOf(
-            FirebaseAnalytics.Param.SCREEN_NAME to "Dashboard Screen",
-            FirebaseAnalytics.Param.SCREEN_CLASS to "DashboardScreen.kt"
+            AnalyticsParams.SCREEN_NAME to "Dashboard Screen",
+            AnalyticsParams.SCREEN_CLASS to "DashboardScreen.kt"
         )
 
         viewModel.firebaseLogEvent("dashboard_screen", dashboardScreenComposable)

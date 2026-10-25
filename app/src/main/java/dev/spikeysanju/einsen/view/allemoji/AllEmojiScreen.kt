@@ -23,10 +23,10 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
@@ -41,7 +41,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.components.EinsenInputTextFieldWithoutHint
 import dev.spikeysanju.einsen.components.EmojiPlaceHolderBottomSheet
@@ -69,7 +69,7 @@ fun AllEmojiScreen(
     // Search, List, Emoji and Bottom Sheet State
     var emojiState by remember { mutableStateOf("") }
     var gridSize by remember { mutableStateOf(60.dp) }
-    val listState = rememberLazyListState()
+    val listState = rememberLazyGridState()
     var searchEmoji by remember { mutableStateOf("") }
 
     // Emoji List state
@@ -80,8 +80,8 @@ fun AllEmojiScreen(
         block = {
             // log event to firebase
             val allEmojiComposable = bundleOf(
-                FirebaseAnalytics.Param.SCREEN_NAME to "All Emoji Screen",
-                FirebaseAnalytics.Param.SCREEN_CLASS to "AllEmojiScreen.kt"
+                AnalyticsParams.SCREEN_NAME to "All Emoji Screen",
+                AnalyticsParams.SCREEN_CLASS to "AllEmojiScreen.kt"
             )
 
             viewModel.firebaseLogEvent("all_emoji_screen", allEmojiComposable)
@@ -103,6 +103,11 @@ fun AllEmojiScreen(
 
         Spacer(modifier = modifier.height(12.dp))
 
+        // load / filter emoji whenever the query changes
+        LaunchedEffect(searchEmoji) {
+            viewModel.getAllEmoji(context = context, searchQuery = searchEmoji)
+        }
+
         // Emoji Grid List
         LazyVerticalGrid(
             state = listState,
@@ -110,11 +115,8 @@ fun AllEmojiScreen(
                 .background(AppTheme.colors.background)
                 .weight(1f)
                 .align(Alignment.CenterHorizontally),
-            cells = GridCells.Adaptive(minSize = gridSize)
+            columns = GridCells.Adaptive(minSize = gridSize)
         ) {
-
-            // get all emoji
-            viewModel.getAllEmoji(context = context, searchQuery = searchEmoji)
 
             // parse emoji into ViewStates
             when (result) {
@@ -124,7 +126,7 @@ fun AllEmojiScreen(
                     item {
                         AnimationViewState(
                             title = stringResource(R.string.text_no_emoji_description),
-                            description = "Please try searching with another term.\n  Ex -> star_struck",
+                            description = stringResource(R.string.text_try_another_term),
                             callToAction = stringResource(R.string.text_retry),
                             screenState = ScreenState.ERROR,
                             actions = {

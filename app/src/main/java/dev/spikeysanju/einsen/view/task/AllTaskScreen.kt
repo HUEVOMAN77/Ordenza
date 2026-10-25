@@ -43,7 +43,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.components.TaskItemCard
 import dev.spikeysanju.einsen.model.task.Task
@@ -66,8 +66,8 @@ fun AllTaskScreen(
     LaunchedEffect(key1 = Unit) {
         // log event to firebase
         val allTaskScreenComposable = bundleOf(
-            FirebaseAnalytics.Param.SCREEN_NAME to "All Task Screen",
-            FirebaseAnalytics.Param.SCREEN_CLASS to "AllTaskScreen.kt"
+            AnalyticsParams.SCREEN_NAME to "All Task Screen",
+            AnalyticsParams.SCREEN_CLASS to "AllTaskScreen.kt"
         )
 
         viewModel.firebaseLogEvent("all_task_screen", allTaskScreenComposable)

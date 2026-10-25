@@ -25,8 +25,8 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.GridCells
-import androidx.compose.foundation.lazy.LazyVerticalGrid
+import androidx.compose.foundation.lazy.grid.GridCells
+import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.FloatingActionButton
 import androidx.compose.material.FloatingActionButtonDefaults
 import androidx.compose.material.Icon
@@ -150,7 +150,7 @@ fun ProjectScreen(
 
         // workspace dashboard layout goes here
         LazyVerticalGrid(
-            cells = GridCells.Adaptive(minSize = gridSize),
+            columns = GridCells.Adaptive(minSize = gridSize),
             modifier
                 .fillMaxSize()
                 .background(AppTheme.colors.background)

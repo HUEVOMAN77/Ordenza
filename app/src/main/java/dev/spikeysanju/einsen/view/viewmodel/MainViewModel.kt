@@ -23,7 +23,7 @@ import android.content.Context
 import android.os.Bundle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dagger.hilt.android.lifecycle.HiltViewModel
 import dev.spikeysanju.einsen.model.emoji.EmojiItem
 import dev.spikeysanju.einsen.model.task.Task
@@ -33,19 +33,21 @@ import dev.spikeysanju.einsen.utils.viewstate.EmojiViewState
 import dev.spikeysanju.einsen.utils.viewstate.SingleViewState
 import dev.spikeysanju.einsen.utils.viewstate.ViewState
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.flow.distinctUntilChanged
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import kotlinx.serialization.decodeFromString
 import kotlinx.serialization.json.Json
+import logcat.logcat
 import javax.inject.Inject
 
 @HiltViewModel
 class MainViewModel @Inject constructor(
-    private val repo: MainRepository,
-    private val firebaseAnalytics: FirebaseAnalytics
+    private val repo: MainRepository
 ) : ViewModel() {
 
     // Backing property to avoid state updates from other classes
@@ -61,8 +63,17 @@ class MainViewModel @Inject constructor(
     val emoji = _emojiViewState.asStateFlow()
     val currentEmoji = _currentEmoji.asStateFlow()
 
+    private var cachedEmoji: List<EmojiItem>? = null
+    private var feedJob: Job? = null
+    private var singleTaskJob: Job? = null
+
     // get all task
-    fun getAllTask() = viewModelScope.launch(Dispatchers.IO) {
+    fun getAllTask() {
+        feedJob?.cancel()
+        feedJob = launchGetAllTask()
+    }
+
+    private fun launchGetAllTask() = viewModelScope.launch(Dispatchers.IO) {
         repo.getAllTask().distinctUntilChanged().collect { result ->
             try {
                 if (result.isNullOrEmpty()) {
@@ -79,20 +90,15 @@ class MainViewModel @Inject constructor(
     // get all list of emoji from Json
     fun getAllEmoji(context: Context, searchQuery: String) = viewModelScope.launch {
         try {
-            // read JSON file
-            val myJson = context.assets.open("emoji.json").bufferedReader().use {
-                it.readText()
-            }
-
-            // format JSON
-            val format = Json {
-                ignoreUnknownKeys = true
-                prettyPrint = true
-                isLenient = true
-            }
-
-            // decode emoji list from json
-            val decodedEmoji = format.decodeFromString<List<EmojiItem>>(myJson).distinct()
+            // read & decode JSON only once, then reuse the cached list
+            val decodedEmoji = cachedEmoji ?: withContext(Dispatchers.IO) {
+                val myJson = context.assets.open("emoji.json").bufferedReader().use { it.readText() }
+                val format = Json {
+                    ignoreUnknownKeys = true
+                    isLenient = true
+                }
+                format.decodeFromString<List<EmojiItem>>(myJson).distinct()
+            }.also { cachedEmoji = it }
 
             // filter the emoji based on Aliases
             val filteredEmojiAliases = decodedEmoji.filter { emojiAliases ->
@@ -116,8 +122,11 @@ class MainViewModel @Inject constructor(
     }
 
     // insert source
-    fun insertTask(task: Task) = viewModelScope.launch {
-        repo.insert(task)
+    fun insertTask(task: Task, onSaved: (Task) -> Unit = {}) = viewModelScope.launch {
+        val rowId = repo.insert(task)
+        // Room returns the generated row id; use it so reminders point to the real task
+        val saved = if (task.id == 0 && rowId > 0) task.copy(id = rowId.toInt()) else task
+        onSaved(saved)
     }
 
     // delete source
@@ -131,10 +140,15 @@ class MainViewModel @Inject constructor(
     }
 
     // find task by id
-    fun findTaskByID(id: Int) = viewModelScope.launch(Dispatchers.IO) {
+    fun findTaskByID(id: Int) {
+        singleTaskJob?.cancel()
+        singleTaskJob = launchFindTaskByID(id)
+    }
+
+    private fun launchFindTaskByID(id: Int) = viewModelScope.launch(Dispatchers.IO) {
         repo.find(id).distinctUntilChanged().collect { result ->
             try {
-                if (result.title.isEmpty()) {
+                if (result == null || result.title.isEmpty()) {
                     _singleViewState.value = SingleViewState.Empty
                 } else {
                     _singleViewState.value = SingleViewState.Success(result)
@@ -145,8 +159,13 @@ class MainViewModel @Inject constructor(
         }
     }
 
-    // get all task
-    fun getTaskByPriority(priority: String) = viewModelScope.launch(Dispatchers.IO) {
+    // get tasks by priority
+    fun getTaskByPriority(priority: String) {
+        feedJob?.cancel()
+        feedJob = launchGetTaskByPriority(priority)
+    }
+
+    private fun launchGetTaskByPriority(priority: String) = viewModelScope.launch(Dispatchers.IO) {
         repo.getTaskByPriority(priority).distinctUntilChanged().collect { result ->
             try {
                 if (result.isNullOrEmpty()) {
@@ -173,10 +192,10 @@ class MainViewModel @Inject constructor(
         }
     }
 
+    /**
+     * Local analytics: logs UI events to Logcat (debug builds only). No data leaves the device.
+     */
     fun firebaseLogEvent(event: String, bundle: Bundle) {
-        firebaseAnalytics.logEvent(
-            event,
-            bundle
-        )
+        logcat("Analytics") { "$event ${bundle.keySet().associateWith { bundle.get(it) }}" }
     }
 }

@@ -22,7 +22,9 @@ package dev.spikeysanju.einsen.workers
 import android.app.Notification
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.app.PendingIntent
 import android.content.Context
+import android.content.Intent
 import android.os.Build
 import androidx.core.app.NotificationCompat
 import androidx.hilt.work.HiltWorker
@@ -30,6 +32,7 @@ import androidx.work.CoroutineWorker
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
+import dev.spikeysanju.einsen.MainActivity
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.data.local.db.TaskDao
 import kotlinx.coroutines.Dispatchers
@@ -53,7 +56,9 @@ class ReminderWorker @AssistedInject constructor(
 
         withContext(Dispatchers.IO) {
 
+            // Task may have been deleted or completed since the reminder was scheduled
             val task = taskDao.findTaskByID(reminderId)
+            if (task == null || task.isCompleted) return@withContext
 
             if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
                 val channel = NotificationChannel(
@@ -73,13 +78,21 @@ class ReminderWorker @AssistedInject constructor(
                         setContentTitle(task.title)
                         setSmallIcon(R.drawable.einsen_logo)
                         setCategory(NotificationCompat.CATEGORY_ALARM)
-                        setContentText("Task due time in 1 hour")
+                        setContentText(context.getString(R.string.reminder_due_in_one_hour))
                         setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
                         setDefaults(Notification.DEFAULT_SOUND)
                         setDefaults(Notification.DEFAULT_VIBRATE)
                     }
             builder.priority = NotificationCompat.PRIORITY_MAX
             builder.setAutoCancel(true)
+            builder.setContentIntent(
+                PendingIntent.getActivity(
+                    context,
+                    task.id,
+                    Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
+                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+                )
+            )
 
             notificationManager.notify(task.id, builder.build())
         }

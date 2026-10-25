@@ -60,7 +60,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.app.ShareCompat
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.components.BottomCTA
 import dev.spikeysanju.einsen.components.ChipView
@@ -89,8 +89,8 @@ fun TaskDetailsScreen(
     LaunchedEffect(key1 = Unit) {
         // log event to firebase
         val taskDetailsComposableBundle = bundleOf(
-            FirebaseAnalytics.Param.SCREEN_NAME to "Task Details Screen",
-            FirebaseAnalytics.Param.SCREEN_CLASS to "TaskDetailsScreen.kt"
+            AnalyticsParams.SCREEN_NAME to "Task Details Screen",
+            AnalyticsParams.SCREEN_CLASS to "TaskDetailsScreen.kt"
         )
 
         viewModel.firebaseLogEvent(

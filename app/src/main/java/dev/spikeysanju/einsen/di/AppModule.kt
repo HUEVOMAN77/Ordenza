@@ -21,7 +21,6 @@ package dev.spikeysanju.einsen.di
 
 import android.app.NotificationManager
 import android.content.Context
-import com.google.firebase.analytics.FirebaseAnalytics
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -32,12 +31,6 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object AppModule {
-
-    @Singleton
-    @Provides
-    fun provideFirebaseAnalytics(@ApplicationContext context: Context): FirebaseAnalytics {
-        return FirebaseAnalytics.getInstance(context)
-    }
 
     @Singleton
     @Provides

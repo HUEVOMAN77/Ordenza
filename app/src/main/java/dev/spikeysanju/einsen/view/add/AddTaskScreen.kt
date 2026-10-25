@@ -53,7 +53,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.components.EinsenInputTextField
 import dev.spikeysanju.einsen.components.EinsenStepSlider
@@ -114,8 +114,8 @@ fun AddTaskScreen(
         block = {
             // log event to firebase
             val addTaskComposable = bundleOf(
-                FirebaseAnalytics.Param.SCREEN_NAME to "Add Task Screen",
-                FirebaseAnalytics.Param.SCREEN_CLASS to "AddTaskScreen.kt"
+                AnalyticsParams.SCREEN_NAME to "Add Task Screen",
+                AnalyticsParams.SCREEN_CLASS to "AddTaskScreen.kt"
             )
 
             viewModel.firebaseLogEvent("add_task_screen", addTaskComposable)
@@ -299,15 +299,16 @@ fun AddTaskScreen(
                     taskState = taskState.copy(priority = calculatePriority(priorityAverage))
 
                     when {
-                        taskState.title.isEmpty() && taskState.description.isEmpty() || taskState.category.isEmpty() -> {
+                        taskState.title.isBlank() || taskState.category.isBlank() -> {
                             scope.launch {
-                                scaffoldState.snackbarHostState.showSnackbar(message = "Please fill all the fields & save the task")
+                                scaffoldState.snackbarHostState.showSnackbar(message = context.getString(R.string.text_fill_required_fields))
                             }
                         }
                         else -> {
-                            viewModel.insertTask(taskState).run {
-                                context.scheduleReminders(taskState)
-                                showToast(context, "Task added successfully")
+                            viewModel.insertTask(taskState) { saved ->
+                                context.scheduleReminders(saved)
+                            }.run {
+                                showToast(context, context.getString(R.string.text_task_added))
 
                                 // log event to firebase
                                 val addTaskBundle = bundleOf(

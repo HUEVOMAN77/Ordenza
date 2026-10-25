@@ -54,7 +54,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.components.EinsenInputTextField
 import dev.spikeysanju.einsen.components.EinsenStepSlider
@@ -109,8 +109,8 @@ fun EditTaskScreen(modifier: Modifier, viewModel: MainViewModel, actions: MainAc
     LaunchedEffect(key1 = Unit) {
         // log event to firebase
         val editTaskComposable = bundleOf(
-            FirebaseAnalytics.Param.SCREEN_NAME to "Edit Task Screen",
-            FirebaseAnalytics.Param.SCREEN_CLASS to "EditTaskScreen.kt"
+            AnalyticsParams.SCREEN_NAME to "Edit Task Screen",
+            AnalyticsParams.SCREEN_CLASS to "EditTaskScreen.kt"
         )
 
         viewModel.firebaseLogEvent("edit_screen", editTaskComposable)
@@ -391,16 +391,16 @@ fun EditTaskScreen(modifier: Modifier, viewModel: MainViewModel, actions: MainAc
                             }
 
                             when {
-                                titleState.isEmpty() && descriptionState.isEmpty() || categoryState.isEmpty() -> {
+                                titleState.isBlank() || categoryState.isBlank() -> {
                                     scope.launch {
-                                        scaffoldState.snackbarHostState.showSnackbar("Please fill all the fields & save the task")
+                                        scaffoldState.snackbarHostState.showSnackbar(context.getString(R.string.text_fill_required_fields))
                                     }
                                 }
                                 else -> {
-                                    viewModel.insertTask(task).run {
-
-                                        context.scheduleReminders(task)
-                                        showToast(context, "Task updated successfully!")
+                                    viewModel.insertTask(task) { saved ->
+                                        context.scheduleReminders(saved)
+                                    }.run {
+                                        showToast(context, context.getString(R.string.text_task_updated))
                                         // log event to firebase
                                         val updateTaskBundle = bundleOf(
                                             "update_task_button" to "Clicked Update Task button to update the task"

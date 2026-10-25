@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Einsen</string>
+
+    <string name="text_splash">Inicio</string>
+    <string name="text_dashboard">Panel</string>
+    <string name="text_addTask">Agregar tarea</string>
+    <string name="text_editTask">Editar tarea</string>
+    <string name="text_about">Acerca de</string>
+    <string name="text_allTask">Todas las tareas</string>
+    <string name="text_taskDetails">Detalles de la tarea</string>
+    <string name="text_project">Mi proyecto</string>
+
+    <string name="text_no_task_title">Aún no hay tareas</string>
+    <string name="text_no_task_description">¡Agrega tu primera tarea!</string>
+    <string name="text_no_emoji_description">No encontramos coincidencias :(</string>
+    <string name="text_add_a_task">Agregar una tarea</string>
+    <string name="text_error_title">Bueno, esto no lo esperábamos…</string>
+    <string name="text_error_description">Lo sentimos, hubo un problema técnico. Agrega alguna tarea e inténtalo de nuevo…</string>
+
+    <string name="text_do_it_now">Hazlo ahora</string>
+    <string name="text_decide_when_todo">Decide cuándo hacerlo</string>
+    <string name="text_important_not_urgent">Importante, no urgente</string>
+    <string name="text_important_and_urgent">Urgente e importante</string>
+    <string name="text_delegate_it">Delégalo</string>
+    <string name="text_urgent_not_important">Urgente, no importante</string>
+    <string name="text_dump_it">¡Descártalo!</string>
+    <string name="text_not_important_not_urgent">Ni importante ni urgente</string>
+    <string name="text_my_dashboard">Mi panel</string>
+    <string name="text_bulb_turn_on">Cambiar tema</string>
+    <string name="back_button">Atrás</string>
+
+    <string name="text_title">Título</string>
+    <string name="text_description">Descripción</string>
+    <string name="text_category">Categoría</string>
+    <string name="text_due_date_time">Fecha y hora límite</string>
+    <string name="text_importance">Importancia</string>
+    <string name="text_save_task">Guardar tarea</string>
+    <string name="text_urgency">Urgencia</string>
+    <string name="tetxt_choose_emoji">Elegir emoji</string>
+    <string name="text_edit_button">Editar</string>
+    <string name="text_delete_button">Eliminar</string>
+    <string name="text_share_button">Compartir</string>
+    <string name="text_complete">Completada</string>
+    <string name="text_incomplete">Pendiente</string>
+    <string name="text_all_emoji">Todos los emoji</string>
+    <string name="text_message_share">Título: %s %s \n\nDescripción: %s \n\nCategoría: %s \n\nPrioridad: %s \n\n\nCreada: %s \n\nVisita: https://github.com/HUEVOMAN77/Einsen</string>
+
+    <string name="text_attribution_and_license">Atribución y licencia</string>
+    <string name="text_visit">Visitar</string>
+    <string name="text_author">Autor</string>
+    <string name="text_author_name">Hecho con 🍄 por Spikey Sanju · Mantenido por HUEVOMAN77</string>
+    <string name="text_license">Licencia Apache 2.0</string>
+    <string name="text_webview">Navegador</string>
+    <string name="text_einsen_logo">Logo de Einsen</string>
+    <string name="text_search_emoji">Buscar emoji...</string>
+    <string name="text_go_back">¡Volver!</string>
+    <string name="text_retry">Buscar de nuevo</string>
+
+    <string name="reminder_due_in_one_hour">La tarea vence en 1 hora</string>
+
+    <string name="text_fill_required_fields">Agrega al menos un título y una categoría</string>
+    <string name="text_task_added">Tarea agregada</string>
+    <string name="text_task_updated">¡Tarea actualizada!</string>
+    <string name="text_try_another_term">Intenta con otro término.\n  Ej: star_struck</string>
+</resources>

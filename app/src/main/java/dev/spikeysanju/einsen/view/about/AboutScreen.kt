@@ -63,7 +63,7 @@ import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.BuildConfig
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.navigation.MainActions
@@ -90,8 +90,8 @@ fun AboutScreen(modifier: Modifier, viewModel: MainViewModel, actions: MainActio
         block = {
             // log event to firebase
             val aboutComposable = bundleOf(
-                FirebaseAnalytics.Param.SCREEN_NAME to "About Screen",
-                FirebaseAnalytics.Param.SCREEN_CLASS to "AboutScreen.kt"
+                AnalyticsParams.SCREEN_NAME to "About Screen",
+                AnalyticsParams.SCREEN_CLASS to "AboutScreen.kt"
             )
 
             viewModel.firebaseLogEvent("about_screen", aboutComposable)

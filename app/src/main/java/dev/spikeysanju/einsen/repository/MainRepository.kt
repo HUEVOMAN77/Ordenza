@@ -45,7 +45,7 @@ class MainRepository @Inject constructor(
      * Create a new Task.
      * @param task
      */
-    suspend fun insert(task: Task) = taskDao.insertTask(task)
+    suspend fun insert(task: Task): Long = taskDao.insertTask(task)
 
     /**
      * Update a existing Task.

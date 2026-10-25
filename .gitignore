@@ -18,3 +18,9 @@ local.properties
 /api/.gradle/
 /api/.idea/
 /api/build/
+
+# Signing
+*.jks
+*.keystore
+keystore.properties
+/dist

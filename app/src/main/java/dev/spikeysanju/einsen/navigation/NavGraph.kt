@@ -19,22 +19,24 @@
 
 package dev.spikeysanju.einsen.navigation
 
+import androidx.compose.animation.AnimatedContentTransitionScope
+import androidx.compose.animation.core.tween
+import androidx.compose.animation.fadeIn
+import androidx.compose.animation.fadeOut
+import androidx.compose.material.navigation.ModalBottomSheetLayout
+import androidx.compose.material.navigation.bottomSheet
+import androidx.compose.material.navigation.rememberBottomSheetNavigator
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
-import androidx.hilt.navigation.HiltViewModelFactory
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.viewmodel.compose.viewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavType
+import androidx.navigation.compose.NavHost
+import androidx.navigation.compose.composable
+import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import com.google.accompanist.navigation.animation.AnimatedNavHost
-import com.google.accompanist.navigation.animation.composable
-import com.google.accompanist.navigation.animation.rememberAnimatedNavController
-import com.google.accompanist.navigation.material.ModalBottomSheetLayout
-import com.google.accompanist.navigation.material.bottomSheet
-import com.google.accompanist.navigation.material.rememberBottomSheetNavigator
 import dev.spikeysanju.einsen.model.task.Priority
 import dev.spikeysanju.einsen.utils.getUrgencyImportanceFromPriority
 import dev.spikeysanju.einsen.view.about.AboutScreen
@@ -72,12 +74,23 @@ object EinsenModifier {
 @Composable
 fun NavGraph(toggleTheme: () -> Unit) {
     val bottomSheetNavigator = rememberBottomSheetNavigator()
-    val navController = rememberAnimatedNavController(bottomSheetNavigator)
+    val navController = rememberNavController(bottomSheetNavigator)
     val actions = remember(navController) { MainActions(navController) }
 
     ModalBottomSheetLayout(bottomSheetNavigator) {
 
-        AnimatedNavHost(navController, startDestination = Screen.Dashboard.route) {
+        NavHost(
+            navController,
+            startDestination = Screen.Dashboard.route,
+            enterTransition = {
+                slideIntoContainer(AnimatedContentTransitionScope.SlideDirection.Start, tween(300)) + fadeIn(tween(300))
+            },
+            exitTransition = { fadeOut(tween(200)) },
+            popEnterTransition = { fadeIn(tween(200)) },
+            popExitTransition = {
+                slideOutOfContainer(AnimatedContentTransitionScope.SlideDirection.End, tween(300)) + fadeOut(tween(300))
+            }
+        ) {
 
             /**
              * Navigates to [SplashScreen].
@@ -102,10 +115,8 @@ fun NavGraph(toggleTheme: () -> Unit) {
             composable(
                 Screen.Dashboard.route
             ) {
-                val viewModel: MainViewModel = viewModel(
-                    factory = HiltViewModelFactory(LocalContext.current, it)
-                )
-                viewModel.getAllTask()
+                val viewModel = hiltViewModel<MainViewModel>(it)
+                LaunchedEffect(Unit) { viewModel.getAllTask() }
                 DashboardScreen(
                     EinsenModifier.modifier,
                     viewModel,
@@ -131,10 +142,10 @@ fun NavGraph(toggleTheme: () -> Unit) {
                 )
             ) {
                 val viewModel = hiltViewModel<MainViewModel>(it)
-                navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>(EndPoints.EMOJI)
-                    ?.observeForever { result ->
-                        viewModel.currentEmoji(result)
-                    }
+                LaunchedEffect(it) {
+                    it.savedStateHandle.getStateFlow<String?>(EndPoints.EMOJI, null)
+                        .collect { result -> if (result != null) viewModel.currentEmoji(result) }
+                }
 
                 val defaultUrgency = it.arguments?.getInt(QueryParams.URGENCY) ?: 0
                 val defaultImportance = it.arguments?.getInt(QueryParams.IMPORTANCE) ?: 0
@@ -161,7 +172,7 @@ fun NavGraph(toggleTheme: () -> Unit) {
                 val priority = it.arguments?.getString(EndPoints.PRIORITY)
                     ?: throw IllegalStateException("'Priority' shouldn't be null")
 
-                viewModel.getTaskByPriority(priority = priority)
+                LaunchedEffect(priority) { viewModel.getTaskByPriority(priority = priority) }
 
                 val defaultUrgencyImportance = getUrgencyImportanceFromPriority(priority)
 
@@ -186,7 +197,7 @@ fun NavGraph(toggleTheme: () -> Unit) {
                 val taskID = it.arguments?.getInt(EndPoints.ID)
                     ?: throw IllegalStateException("'Task ID' shouldn't be null")
 
-                viewModel.findTaskByID(taskID)
+                LaunchedEffect(taskID) { viewModel.findTaskByID(taskID) }
                 TaskDetailsScreen(EinsenModifier.modifier, viewModel, actions)
             }
 
@@ -202,11 +213,11 @@ fun NavGraph(toggleTheme: () -> Unit) {
                 val taskID = it.arguments?.getInt(EndPoints.ID)
                     ?: throw IllegalStateException("'Task ID' shouldn't be null")
 
-                navController.currentBackStackEntry?.savedStateHandle?.getLiveData<String>(EndPoints.EMOJI)
-                    ?.observeForever { result ->
-                        viewModel.currentEmoji(result)
-                    }
-                viewModel.findTaskByID(taskID)
+                LaunchedEffect(it) {
+                    it.savedStateHandle.getStateFlow<String?>(EndPoints.EMOJI, null)
+                        .collect { result -> if (result != null) viewModel.currentEmoji(result) }
+                }
+                LaunchedEffect(taskID) { viewModel.findTaskByID(taskID) }
                 EditTaskScreen(EinsenModifier.modifier, viewModel, actions)
             }
 

@@ -19,8 +19,21 @@
 
 package dev.spikeysanju.einsen
 
+import android.Manifest
+import android.content.pm.PackageManager
+import android.os.Build
 import android.os.Bundle
+import androidx.activity.result.contract.ActivityResultContracts
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.repeatOnLifecycle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.safeDrawingPadding
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -38,7 +51,6 @@ import dev.spikeysanju.einsen.navigation.NavGraph
 import dev.spikeysanju.einsen.ui.theme.apptheme.AppTheme.AppTheme
 import dev.spikeysanju.einsen.ui.theme.color.darkColors
 import dev.spikeysanju.einsen.ui.theme.color.lightColors
-import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -47,7 +59,11 @@ class MainActivity : AppCompatActivity() {
     @Inject
     lateinit var themeManager: ThemeManager
 
+    private val notificationPermission =
+        registerForActivityResult(ActivityResultContracts.RequestPermission()) { /* no-op */ }
+
     override fun onCreate(savedInstanceState: Bundle?) {
+        enableEdgeToEdge()
         super.onCreate(savedInstanceState)
         setContent {
             EinsenMain()
@@ -57,6 +73,20 @@ class MainActivity : AppCompatActivity() {
          * Observe the Theme Mode
          */
         observeThemeMode()
+
+        /**
+         * Android 13+ requires runtime permission to show task reminders.
+         */
+        requestNotificationPermission()
+    }
+
+    private fun requestNotificationPermission() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU &&
+            ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) !=
+            PackageManager.PERMISSION_GRANTED
+        ) {
+            notificationPermission.launch(Manifest.permission.POST_NOTIFICATIONS)
+        }
     }
 
     @Composable
@@ -79,38 +109,44 @@ class MainActivity : AppCompatActivity() {
         val colors = if (darkMode) darkColors() else lightColors()
 
         AppTheme(colors = colors) {
-            Surface(color = dev.spikeysanju.einsen.ui.theme.apptheme.AppTheme.colors.background) {
-                SetStatusBarColor()
-                NavGraph(toggleTheme)
+            Surface(
+                modifier = Modifier.fillMaxSize(),
+                color = dev.spikeysanju.einsen.ui.theme.apptheme.AppTheme.colors.background
+            ) {
+                SetStatusBarColor(darkMode)
+                // Keep content clear of status/navigation bars and the keyboard (Android 15 edge-to-edge)
+                Box(modifier = Modifier.safeDrawingPadding()) {
+                    NavGraph(toggleTheme)
+                }
             }
         }
     }
 
     private fun observeThemeMode() {
-        lifecycleScope.launchWhenStarted {
-            themeManager.uiModeFlow.collect {
-                val mode = when (it) {
-                    true -> AppCompatDelegate.MODE_NIGHT_YES
-                    false -> AppCompatDelegate.MODE_NIGHT_NO
+        lifecycleScope.launch {
+            repeatOnLifecycle(Lifecycle.State.STARTED) {
+                themeManager.uiModeFlow.collect {
+                    val mode = when (it) {
+                        true -> AppCompatDelegate.MODE_NIGHT_YES
+                        false -> AppCompatDelegate.MODE_NIGHT_NO
+                    }
+                    AppCompatDelegate.setDefaultNightMode(mode)
                 }
-                AppCompatDelegate.setDefaultNightMode(mode)
             }
         }
     }
 }
 
 @Composable
-fun SetStatusBarColor() {
-    // Remember a SystemUiController
+fun SetStatusBarColor(darkMode: Boolean) {
     val systemUiController = rememberSystemUiController()
-    val color = dev.spikeysanju.einsen.ui.theme.apptheme.AppTheme.colors.background
 
     /**
-     *  Update all of the system bar colors to be transparent, and use
-     *  dark icons if we're in light theme
+     *  Transparent system bars (content draws behind them), with icon colors
+     *  matching the app theme rather than the system theme.
      */
     SideEffect {
-        systemUiController.setStatusBarColor(color = color)
+        systemUiController.setSystemBarsColor(color = Color.Transparent, darkIcons = !darkMode)
     }
 }
 

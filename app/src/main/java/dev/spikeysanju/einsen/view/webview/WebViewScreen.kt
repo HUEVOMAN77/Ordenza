@@ -41,7 +41,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.viewinterop.AndroidView
 import androidx.core.os.bundleOf
-import com.google.firebase.analytics.FirebaseAnalytics
+import dev.spikeysanju.einsen.analytics.AnalyticsParams
 import dev.spikeysanju.einsen.R
 import dev.spikeysanju.einsen.navigation.MainActions
 import dev.spikeysanju.einsen.ui.theme.apptheme.AppTheme
@@ -64,8 +64,8 @@ fun WebViewScreen(
         block = {
             // log event to firebase
             val webViewComposable = bundleOf(
-                FirebaseAnalytics.Param.SCREEN_NAME to "WebView Screen",
-                FirebaseAnalytics.Param.SCREEN_CLASS to "WebViewScreen.kt"
+                AnalyticsParams.SCREEN_NAME to "WebView Screen",
+                AnalyticsParams.SCREEN_CLASS to "WebViewScreen.kt"
             )
 
             viewModel.firebaseLogEvent("webview_screen", webViewComposable)
