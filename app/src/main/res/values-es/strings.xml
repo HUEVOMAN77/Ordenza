@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <string name="app_name">Einsen</string>
+    <string name="app_name">Ordenza</string>
 
     <string name="text_splash">Inicio</string>
     <string name="text_dashboard">Panel</string>
@@ -44,15 +44,15 @@
     <string name="text_complete">Completada</string>
     <string name="text_incomplete">Pendiente</string>
     <string name="text_all_emoji">Todos los emoji</string>
-    <string name="text_message_share">Título: %s %s \n\nDescripción: %s \n\nCategoría: %s \n\nPrioridad: %s \n\n\nCreada: %s \n\nVisita: https://github.com/HUEVOMAN77/Einsen</string>
+    <string name="text_message_share">Título: %s %s \n\nDescripción: %s \n\nCategoría: %s \n\nPrioridad: %s \n\n\nCreada: %s \n\nVisita: https://github.com/HUEVOMAN77/Ordenza</string>
 
     <string name="text_attribution_and_license">Atribución y licencia</string>
     <string name="text_visit">Visitar</string>
     <string name="text_author">Autor</string>
-    <string name="text_author_name">Hecho con 🍄 por Spikey Sanju · Mantenido por HUEVOMAN77</string>
+    <string name="text_author_name">Ordenza por HUEVOMAN77 · Basado en Einsen de Spikey Sanju</string>
     <string name="text_license">Licencia Apache 2.0</string>
     <string name="text_webview">Navegador</string>
-    <string name="text_einsen_logo">Logo de Einsen</string>
+    <string name="text_einsen_logo">Logo de Ordenza</string>
     <string name="text_search_emoji">Buscar emoji...</string>
     <string name="text_go_back">¡Volver!</string>
     <string name="text_retry">Buscar de nuevo</string>

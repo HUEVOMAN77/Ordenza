@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Ordenza logo (rounded square) used in splash & about screens -->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="108dp" android:height="108dp"
+    android:viewportWidth="108" android:viewportHeight="108">
+    <path android:fillColor="#16213E" android:pathData="M36,14 H72 A22,22 0 0 1 94,36 V72 A22,22 0 0 1 72,94 H36 A22,22 0 0 1 14,72 V36 A22,22 0 0 1 36,14 Z"/>
+
+    <path android:fillColor="#C2674A" android:strokeColor="#D9B77A" android:strokeWidth="0.9"
+        android:pathData="M36.1,31.5 H46.9 A4.6,4.6 0 0 1 51.5,36.1 V46.9 A4.6,4.6 0 0 1 46.9,51.5 H36.1 A4.6,4.6 0 0 1 31.5,46.9 V36.1 A4.6,4.6 0 0 1 36.1,31.5 Z"/>
+    <path android:strokeColor="#FFFFFF" android:strokeWidth="2" android:strokeLineCap="round" android:strokeLineJoin="round"
+        android:pathData="M36.7,42.1 L40.2,45.6 L46.5,38.1"/>
+    <path android:strokeColor="#8BA67F" android:strokeWidth="1.8" android:pathData="M61.1,32.4 H71.89999999999999 A3.6999999999999997,3.6999999999999997 0 0 1 75.6,36.1 V46.89999999999999 A3.6999999999999997,3.6999999999999997 0 0 1 71.89999999999999,50.599999999999994 H61.1 A3.6999999999999997,3.6999999999999997 0 0 1 57.4,46.89999999999999 V36.1 A3.6999999999999997,3.6999999999999997 0 0 1 61.1,32.4 Z"/>
+    <path android:strokeColor="#7B9BBE" android:strokeWidth="1.8" android:pathData="M36.1,57.4 H46.89999999999999 A3.6999999999999997,3.6999999999999997 0 0 1 50.599999999999994,61.1 V71.89999999999999 A3.6999999999999997,3.6999999999999997 0 0 1 46.89999999999999,75.6 H36.1 A3.6999999999999997,3.6999999999999997 0 0 1 32.4,71.89999999999999 V61.1 A3.6999999999999997,3.6999999999999997 0 0 1 36.1,57.4 Z"/>
+    <path android:strokeColor="#D6B88E" android:strokeWidth="1.8" android:pathData="M61.1,57.4 H71.89999999999999 A3.6999999999999997,3.6999999999999997 0 0 1 75.6,61.1 V71.89999999999999 A3.6999999999999997,3.6999999999999997 0 0 1 71.89999999999999,75.6 H61.1 A3.6999999999999997,3.6999999999999997 0 0 1 57.4,71.89999999999999 V61.1 A3.6999999999999997,3.6999999999999997 0 0 1 61.1,57.4 Z"/>
+</vector>

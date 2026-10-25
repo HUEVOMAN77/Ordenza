@@ -159,7 +159,7 @@ fun ProjectScreen(
             item {
                 ItemWorkspaceCard(
                     modifier = modifier,
-                    title = "Einsen app",
+                    title = "Ordenza app",
                     itemCount = "4 action items",
                     emoji = "\uD83D\uDD25",
                     tag = "Open source",
@@ -171,7 +171,7 @@ fun ProjectScreen(
             item {
                 ItemWorkspaceCard(
                     modifier = modifier,
-                    title = "Einsen app",
+                    title = "Ordenza app",
                     itemCount = "4 action items",
                     emoji = "\uD83D\uDD25",
                     tag = "Open source",
@@ -183,7 +183,7 @@ fun ProjectScreen(
             item {
                 ItemWorkspaceCard(
                     modifier = modifier,
-                    title = "Einsen app",
+                    title = "Ordenza app",
                     itemCount = "4 action items",
                     emoji = "\uD83D\uDD25",
                     tag = "Open source",

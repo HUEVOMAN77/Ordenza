@@ -53,7 +53,7 @@ import androidx.compose.ui.unit.sp
 import dev.spikeysanju.einsen.model.task.Priority
 import dev.spikeysanju.einsen.model.task.Task
 import dev.spikeysanju.einsen.ui.theme.apptheme.AppTheme
-import dev.spikeysanju.einsen.ui.theme.typography.sailec
+import dev.spikeysanju.einsen.ui.theme.typography.dmSans
 
 /**
  * This component is used to show all the task item of this app.
@@ -124,7 +124,7 @@ fun TaskItemCard(
                         true -> TextStyle(
                             textDecoration = TextDecoration.LineThrough,
                             fontSize = 16.sp,
-                            fontFamily = sailec,
+                            fontFamily = dmSans,
                             fontWeight = FontWeight.SemiBold
                         )
                         false -> AppTheme.typography.subtitle
@@ -142,7 +142,7 @@ fun TaskItemCard(
                         true -> TextStyle(
                             textDecoration = TextDecoration.LineThrough,
                             fontSize = 12.sp,
-                            fontFamily = sailec,
+                            fontFamily = dmSans,
                             fontWeight = FontWeight.Normal
                         )
                         false -> AppTheme.typography.caption

@@ -27,59 +27,63 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import dev.spikeysanju.einsen.R
 
-val sailec = FontFamily(
-    Font(R.font.sailec_regular),
-    Font(R.font.sailec_medium, FontWeight.SemiBold),
-    Font(R.font.sailec_bold, FontWeight.Bold)
+val playfair = FontFamily(
+    Font(R.font.playfair_display_regular)
+)
+
+val dmSans = FontFamily(
+    Font(R.font.dmsans_regular),
+    Font(R.font.dmsans_semibold, FontWeight.SemiBold),
+    Font(R.font.dmsans_bold, FontWeight.Bold)
 )
 
 data class AppTypography(
 
     val bigTitle: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.Bold,
         fontSize = 48.sp
     ),
 
     val h1: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.Bold,
         fontSize = 24.sp,
     ),
 
     val h2: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.Bold,
         fontSize = 20.sp
     ),
 
     val subtitle: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.SemiBold,
         fontSize = 16.sp
     ),
 
     val body: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.Normal,
         fontSize = 14.sp,
         lineHeight = 24.sp
     ),
 
     val button: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.Bold,
         fontSize = 14.sp
     ),
 
     val caption: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.Normal,
         fontSize = 12.sp
     ),
 
     val overline: TextStyle = TextStyle(
-        fontFamily = sailec,
+        fontFamily = dmSans,
         fontWeight = FontWeight.SemiBold,
         fontSize = 10.sp,
         letterSpacing = 1.25.sp

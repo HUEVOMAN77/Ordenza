@@ -141,13 +141,22 @@ fun AboutScreen(modifier: Modifier, viewModel: MainViewModel, actions: MainActio
             item {
 
                 Box(modifier = modifier.fillMaxWidth(), contentAlignment = Alignment.Center) {
-                    Image(
-                        painter = painterResource(id = R.drawable.einsen_logo),
-                        contentDescription = stringResource(
-                            R.string.text_einsen_logo
-                        ),
-                        modifier = modifier.size(80.dp)
-                    )
+                    Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                        Image(
+                            painter = painterResource(id = R.drawable.ordenza_logo),
+                            contentDescription = stringResource(R.string.text_einsen_logo),
+                            modifier = modifier.size(110.dp)
+                        )
+                        androidx.compose.material.Text(
+                            text = stringResource(R.string.app_name),
+                            style = androidx.compose.ui.text.TextStyle(
+                                fontFamily = dev.spikeysanju.einsen.ui.theme.typography.playfair,
+                                fontSize = 24.sp,
+                                letterSpacing = 5.sp,
+                                color = dev.spikeysanju.einsen.view.splash.OrdenzaGold
+                            )
+                        )
+                    }
                 }
             }
 
@@ -245,7 +254,7 @@ fun TitleAndURL(modifier: Modifier = Modifier, title: String, url: String, onCli
                     spanStyle = SpanStyle(
                         color = AppTheme.colors.information,
                         fontFamily = FontFamily(
-                            Font(R.font.avenir_medium, FontWeight.Medium)
+                            Font(R.font.nunitosans_medium, FontWeight.Medium)
                         ),
                         fontSize = 14.sp,
                         textDecoration = TextDecoration.Underline

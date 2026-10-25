@@ -1,6 +1,15 @@
-> **Fork mantenido por [HUEVOMAN77](https://github.com/HUEVOMAN77)** — proyecto original de [Spikeysanju/Einsen](https://github.com/Spikeysanju/Einsen) (Apache 2.0).
+<p align="center"><img src="art/ordenza_icon.png" width="128" alt="Ordenza"/></p>
+<h1 align="center">Ordenza</h1>
+<p align="center">Prioriza tus tareas con la matriz de Eisenhower.</p>
+
+> **Ordenza** es mantenida por [HUEVOMAN77](https://github.com/HUEVOMAN77) y está basada en [Einsen](https://github.com/Spikeysanju/Einsen) de Spikey Sanju (Apache 2.0).
 >
-> ### Novedades de este fork (v1.1.0)
+> ### Novedades v1.2.0
+> - Nueva identidad: nombre **Ordenza**, ícono adaptativo (con soporte de íconos temáticos de Android 13) y logotipo en Playfair Display.
+> - ID de app: `io.github.huevoman77.ordenza`.
+> - Fuentes comerciales (Avenir, Sailec) reemplazadas por fuentes libres OFL: DM Sans, Nunito Sans, Playfair Display y Space Grotesk.
+>
+> ### Novedades v1.1.0
 > - Migrado a Gradle 8.9, AGP 8.7, Kotlin 2.0, Compose BOM 2024.12, KSP, Hilt 2.52, Room 2.6, `compileSdk/targetSdk 35`.
 > - Navegación con `navigation-compose` 2.8 y bottom sheets oficiales (se eliminaron APIs de Accompanist ya retiradas).
 > - Sin Firebase: la analítica ahora es local (solo Logcat en debug), nada sale del dispositivo.
@@ -10,7 +19,7 @@
 > - Traducción completa al español.
 > - CI en GitHub Actions: pruebas unitarias, prueba E2E en emulador y APK debug + release firmado como artefactos; los tags `v*` publican un Release con el APK.
 >
-> **Descargar APK:** pestaña [Releases](https://github.com/HUEVOMAN77/Einsen/releases) o los artefactos del último run en [Actions](https://github.com/HUEVOMAN77/Einsen/actions).
+> **Descargar APK:** pestaña [Releases](https://github.com/HUEVOMAN77/Ordenza/releases) o los artefactos del último run en [Actions](https://github.com/HUEVOMAN77/Ordenza/actions).
 >
 > **Compilar localmente:** JDK 17 + Android SDK 35 → `./gradlew assembleDebug`. Para release firmado define `EINSEN_KEYSTORE_FILE`, `EINSEN_KEYSTORE_PASSWORD`, `EINSEN_KEY_ALIAS` y `EINSEN_KEY_PASSWORD` (variables de entorno o `keystore.properties`).
 

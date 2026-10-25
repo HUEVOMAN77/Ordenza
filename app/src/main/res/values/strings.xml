@@ -20,7 +20,7 @@
 <resources>
 
     <!--    Application name-->
-    <string name="app_name">Einsen</string>
+    <string name="app_name">Ordenza</string>
 
     <!--    Application screens-->
     <string name="text_splash">Splash</string>
@@ -68,17 +68,17 @@
     <string name="text_complete">Complete</string>
     <string name="text_incomplete">Incomplete</string>
     <string name="text_all_emoji">All Emoji</string>
-    <string name="text_message_share">Title: %s %s \n\nDescription: %s \n\nCategory: %s \n\n\Priority: %s \n\n\nCreatedAt: %s \n\nVisit: https://github.com/HUEVOMAN77/Einsen</string>
+    <string name="text_message_share">Title: %s %s \n\nDescription: %s \n\nCategory: %s \n\n\Priority: %s \n\n\nCreatedAt: %s \n\nVisit: https://github.com/HUEVOMAN77/Ordenza</string>
 
     <!--   About-->
     <string name="text_attribution_and_license"><![CDATA[Attribution & License]]></string>
     <string name="text_visit">Visit</string>
     <string name="text_author">Author</string>
-    <string name="text_author_name">Made with 🍄 Spikey Sanju · Maintained by HUEVOMAN77</string>
-    <string name="text_repo_link">https://github.com/HUEVOMAN77/Einsen</string>
+    <string name="text_author_name">Ordenza by HUEVOMAN77 · Based on Einsen by Spikey Sanju</string>
+    <string name="text_repo_link">https://github.com/HUEVOMAN77/Ordenza</string>
     <string name="text_license">Licensed Under Apache 2.0</string>
     <string name="text_webview">WebView</string>
-    <string name="text_einsen_logo">Einsen logo</string>
+    <string name="text_einsen_logo">Ordenza logo</string>
     <string name="text_four">4</string>
     <string name="text_search_emoji">Search Emoji...</string>
     <string name="text_go_back">Go Back!</string>

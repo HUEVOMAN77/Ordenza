@@ -23,6 +23,13 @@ import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material.Text
+import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.unit.sp
+import dev.spikeysanju.einsen.ui.theme.typography.playfair
 import androidx.compose.foundation.layout.size
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -54,11 +61,25 @@ fun SplashScreen(modifier: Modifier, actions: MainActions) {
                 .background(AppTheme.colors.background),
             contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.einsen_logo),
-                contentDescription = "Einsen Logo",
-                modifier = modifier.size(100.dp)
-            )
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                Image(
+                    painter = painterResource(id = R.drawable.ordenza_logo),
+                    contentDescription = stringResource(R.string.text_einsen_logo),
+                    modifier = modifier.size(140.dp)
+                )
+                Text(
+                    text = stringResource(R.string.app_name),
+                    style = TextStyle(
+                        fontFamily = playfair,
+                        fontSize = 30.sp,
+                        letterSpacing = 6.sp,
+                        color = OrdenzaGold
+                    )
+                )
+            }
         }
     }
 }
+
+/** Ordenza brand gold used for the wordmark. */
+val OrdenzaGold = Color(0xFFAE8840)

@@ -76,7 +76,7 @@ class ReminderWorker @AssistedInject constructor(
                 NotificationCompat.Builder(context, context.getString(R.string.reminder_channel_id))
                     .apply {
                         setContentTitle(task.title)
-                        setSmallIcon(R.drawable.einsen_logo)
+                        setSmallIcon(R.drawable.ic_notification)
                         setCategory(NotificationCompat.CATEGORY_ALARM)
                         setContentText(context.getString(R.string.reminder_due_in_one_hour))
                         setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
