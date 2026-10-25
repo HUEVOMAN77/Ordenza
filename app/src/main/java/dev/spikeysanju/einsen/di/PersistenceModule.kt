@@ -21,6 +21,8 @@ package dev.spikeysanju.einsen.di
 
 import android.content.Context
 import androidx.room.Room
+import androidx.room.migration.Migration
+import androidx.sqlite.db.SupportSQLiteDatabase
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -35,6 +37,22 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object PersistenceModule {
+
+    private val MIGRATION_3_4 = object : Migration(3, 4) {
+        override fun migrate(db: SupportSQLiteDatabase) {
+            db.execSQL(
+                "CREATE TABLE IF NOT EXISTS `subtask` (" +
+                        "`taskId` INTEGER NOT NULL, " +
+                        "`title` TEXT NOT NULL, " +
+                        "`isCompleted` INTEGER NOT NULL DEFAULT 0, " +
+                        "`createdAt` INTEGER NOT NULL, " +
+                        "`id` INTEGER PRIMARY KEY AUTOINCREMENT NOT NULL, " +
+                        "FOREIGN KEY(`taskId`) REFERENCES `task`(`id`) ON UPDATE NO ACTION ON DELETE CASCADE)"
+            )
+            db.execSQL("CREATE INDEX IF NOT EXISTS `index_subtask_taskId` ON `subtask` (`taskId`)")
+        }
+    }
+
     @Singleton
     @Provides
     fun providePreferenceManager(@ApplicationContext context: Context): ThemeManager {
@@ -52,5 +70,7 @@ object PersistenceModule {
             context,
             EinsenDatabase::class.java,
             "task-db"
-        ).fallbackToDestructiveMigration().build()
+        ).addMigrations(MIGRATION_3_4)
+            .fallbackToDestructiveMigration()
+            .build()
 }

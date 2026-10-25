@@ -59,6 +59,36 @@
                 tools:node="remove" />
         </provider>
 
+        <receiver
+            android:name=".workers.ReminderActionReceiver"
+            android:exported="false">
+            <intent-filter>
+                <action android:name="dev.spikeysanju.einsen.action.COMPLETE_TASK" />
+                <action android:name="dev.spikeysanju.einsen.action.SNOOZE_TASK" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".widget.OrdenzaAppWidgetReceiver"
+            android:exported="true">
+            <intent-filter>
+                <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
+            </intent-filter>
+            <meta-data
+                android:name="android.appwidget.provider"
+                android:resource="@xml/ordenza_app_widget_info" />
+        </receiver>
+
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.provider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/file_provider_paths" />
+        </provider>
+
     </application>
 
 </manifest>

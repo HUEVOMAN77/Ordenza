@@ -97,4 +97,24 @@
     <string name="text_task_updated">Task updated successfully!</string>
     <string name="text_try_another_term">Please try searching with another term.\n  Ex -> star_struck</string>
 
+    <!-- Subtasks -->
+    <string name="text_subtasks">Subtasks</string>
+    <string name="text_no_subtasks">No subtasks yet</string>
+    <string name="text_add_subtask_hint">Add a subtask...</string>
+    <string name="text_add_subtask">Add subtask</string>
+    <string name="text_error_load_subtasks">Error loading subtasks</string>
+    <string name="text_loading_subtasks">Loading subtasks...</string>
+
+    <!-- Statistics -->
+    <string name="text_statistics">Statistics</string>
+    <string name="text_backup">Backup</string>
+    <string name="text_backup_title">Backup & Restore</string>
+    <string name="text_backup_description">Export your tasks to a JSON file or import from a previous backup.</string>
+    <string name="text_export_backup">Export Backup</string>
+    <string name="text_export_backup_desc">Save all your tasks and subtasks to a JSON file.</string>
+    <string name="text_export_button">Export</string>
+    <string name="text_import_backup">Import Backup</string>
+    <string name="text_import_backup_desc">Restore tasks from a JSON backup file.</string>
+    <string name="text_import_button">Import</string>
+
 </resources>

@@ -20,6 +20,7 @@
 package dev.spikeysanju.einsen.repository
 
 import dev.spikeysanju.einsen.data.local.db.TaskDao
+import dev.spikeysanju.einsen.model.task.Subtask
 import dev.spikeysanju.einsen.model.task.Task
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.Flow
@@ -87,4 +88,36 @@ class MainRepository @Inject constructor(
      */
     fun getTaskByPriorityCount(priority: String): Flow<Int> =
         taskDao.getTaskByPriorityCount(priority).flowOn(Dispatchers.IO).conflate()
+
+    /**
+     * Get subtasks for a [taskId].
+     */
+    fun getSubtasks(taskId: Int): Flow<List<Subtask>> =
+        taskDao.getSubtasks(taskId).flowOn(Dispatchers.IO).conflate()
+
+    /**
+     * Insert a [Subtask].
+     * @param subtask
+     */
+    suspend fun insertSubtask(subtask: Subtask): Long = taskDao.insertSubtask(subtask)
+
+    /**
+     * Update a [Subtask].
+     * @param subtask
+     */
+    suspend fun updateSubtask(subtask: Subtask) = taskDao.updateSubtask(subtask)
+
+    /**
+     * Delete a [Subtask] by it's [ID].
+     * @param id
+     */
+    suspend fun deleteSubtask(id: Int) = taskDao.deleteSubtask(id)
+
+    /**
+     * Update a status for a [Subtask] by it's [ID].
+     * @param id
+     * @param isCompleted
+     */
+    suspend fun updateSubtaskStatus(id: Int, isCompleted: Boolean) =
+        taskDao.updateSubtaskStatus(id = id, isCompleted = isCompleted)
 }

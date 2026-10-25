@@ -72,6 +72,43 @@ class ReminderWorker @AssistedInject constructor(
                 notificationManager.createNotificationChannel(channel)
             }
 
+            // Main activity intent (open task details)
+            val mainIntent = Intent(context, MainActivity::class.java).apply {
+                flags = Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP
+                putExtra("task_id", task.id)
+            }
+            val mainPendingIntent = PendingIntent.getActivity(
+                context,
+                task.id,
+                mainIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            // Complete task intent
+            val completeIntent = Intent(context, ReminderActionReceiver::class.java).apply {
+                action = ACTION_COMPLETE_TASK
+                putExtra(EXTRA_TASK_ID, task.id)
+                putExtra(EXTRA_TASK_TITLE, task.title)
+            }
+            val completePendingIntent = PendingIntent.getBroadcast(
+                context,
+                task.id + 1000,
+                completeIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
+            // Snooze task intent
+            val snoozeIntent = Intent(context, ReminderActionReceiver::class.java).apply {
+                action = ACTION_SNOOZE_TASK
+                putExtra(EXTRA_TASK_ID, task.id)
+            }
+            val snoozePendingIntent = PendingIntent.getBroadcast(
+                context,
+                task.id + 2000,
+                snoozeIntent,
+                PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+            )
+
             val builder =
                 NotificationCompat.Builder(context, context.getString(R.string.reminder_channel_id))
                     .apply {
@@ -85,13 +122,22 @@ class ReminderWorker @AssistedInject constructor(
                     }
             builder.priority = NotificationCompat.PRIORITY_MAX
             builder.setAutoCancel(true)
-            builder.setContentIntent(
-                PendingIntent.getActivity(
-                    context,
-                    task.id,
-                    Intent(context, MainActivity::class.java).addFlags(Intent.FLAG_ACTIVITY_NEW_TASK or Intent.FLAG_ACTIVITY_CLEAR_TOP),
-                    PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
-                )
+            builder.setContentIntent(mainPendingIntent)
+
+            // Add action buttons
+            builder.addAction(
+                NotificationCompat.Action.Builder(
+                    R.drawable.ic_check,
+                    "Complete",
+                    completePendingIntent
+                ).build()
+            )
+            builder.addAction(
+                NotificationCompat.Action.Builder(
+                    R.drawable.ic_notification,
+                    "Snooze 1h",
+                    snoozePendingIntent
+                ).build()
             )
 
             notificationManager.notify(task.id, builder.build())

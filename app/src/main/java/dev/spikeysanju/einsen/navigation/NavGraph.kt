@@ -46,6 +46,8 @@ import dev.spikeysanju.einsen.view.dashboard.DashboardScreen
 import dev.spikeysanju.einsen.view.details.TaskDetailsScreen
 import dev.spikeysanju.einsen.view.edit.EditTaskScreen
 import dev.spikeysanju.einsen.view.project.ProjectScreen
+import dev.spikeysanju.einsen.view.statistics.StatisticsScreen
+import dev.spikeysanju.einsen.view.backup.BackupScreen
 import dev.spikeysanju.einsen.view.splash.SplashScreen
 import dev.spikeysanju.einsen.view.task.AllTaskScreen
 import dev.spikeysanju.einsen.view.viewmodel.MainViewModel
@@ -279,6 +281,34 @@ fun NavGraph(toggleTheme: () -> Unit) {
                     }
                 )
             }
+
+            /**
+             * Navigates to [Statistics].
+             * @param viewModel
+             * @param actions
+             */
+            composable(route = Screen.Statistics.route) {
+                val viewModel = hiltViewModel<MainViewModel>(it)
+                StatisticsScreen(
+                    modifier = EinsenModifier.modifier,
+                    viewModel = viewModel,
+                    actions = actions
+                )
+            }
+
+            /**
+             * Navigates to [Backup].
+             * @param viewModel
+             * @param actions
+             */
+            composable(route = Screen.Backup.route) {
+                val viewModel = hiltViewModel<MainViewModel>(it)
+                BackupScreen(
+                    modifier = EinsenModifier.modifier,
+                    viewModel = viewModel,
+                    actions = actions
+                )
+            }
         }
     }
 }
@@ -327,5 +357,13 @@ class MainActions(navController: NavController) {
 
     val gotoAllEmoji: () -> Unit = {
         navController.navigate(Screen.AllEmoji.route)
+    }
+
+    val gotoStatistics: () -> Unit = {
+        navController.navigate(Screen.Statistics.route)
+    }
+
+    val gotoBackup: () -> Unit = {
+        navController.navigate(Screen.Backup.route)
     }
 }

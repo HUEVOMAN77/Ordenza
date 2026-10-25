@@ -19,11 +19,31 @@
 
 package dev.spikeysanju.einsen.data.local.db
 
+import android.content.Context
 import androidx.room.Database
+import androidx.room.Room
 import androidx.room.RoomDatabase
+import dev.spikeysanju.einsen.model.task.Subtask
 import dev.spikeysanju.einsen.model.task.Task
 
-@Database(entities = [Task::class], version = 3, exportSchema = true)
+@Database(entities = [Task::class, Subtask::class], version = 4, exportSchema = true)
 abstract class EinsenDatabase : RoomDatabase() {
     abstract fun getTaskDao(): TaskDao
+
+    companion object {
+        @Volatile
+        private var INSTANCE: EinsenDatabase? = null
+
+        fun getDatabase(context: Context): EinsenDatabase {
+            return INSTANCE ?: synchronized(this) {
+                val instance = Room.databaseBuilder(
+                    context.applicationContext,
+                    EinsenDatabase::class.java,
+                    "task-db"
+                ).build()
+                INSTANCE = instance
+                instance
+            }
+        }
+    }
 }

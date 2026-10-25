@@ -38,4 +38,6 @@ sealed class Screen(val route: String, @StringRes val resourceId: Int) {
     object WebView : Screen("webview", R.string.text_webview)
     object AllEmoji : Screen("all_emoji", R.string.text_all_emoji)
     object Project : Screen("project", R.string.text_project)
+    object Statistics : Screen("statistics", R.string.text_statistics)
+    object Backup : Screen("backup", R.string.text_backup)
 }

@@ -127,8 +127,11 @@ dependencies {
     ksp(libs.room.compiler)
 
     implementation(libs.work.runtime.ktx)
-    implementation(libs.datastore.preferences)
-    implementation(libs.coroutines.android)
+implementation(libs.datastore.preferences)
+implementation(libs.glance)
+implementation(libs.glance-appwidget)
+implementation(libs.glance-material)
+implementation(libs.coroutines.android)
     implementation(libs.serialization.json)
     implementation(libs.lottie.compose)
     implementation(libs.accompanist.systemuicontroller)

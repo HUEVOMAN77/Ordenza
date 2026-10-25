@@ -24,6 +24,7 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import androidx.room.Update
+import dev.spikeysanju.einsen.model.task.Subtask
 import dev.spikeysanju.einsen.model.task.Task
 import kotlinx.coroutines.flow.Flow
 
@@ -56,4 +57,20 @@ interface TaskDao {
 
     @Query("SELECT COUNT(id) FROM task WHERE priority=:priority")
     fun getTaskByPriorityCount(priority: String): Flow<Int>
+
+    // Subtask operations
+    @Query("SELECT * FROM subtask WHERE taskId = :taskId ORDER BY id ASC")
+    fun getSubtasks(taskId: Int): Flow<List<Subtask>>
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun insertSubtask(subtask: Subtask): Long
+
+    @Update(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun updateSubtask(subtask: Subtask)
+
+    @Query("DELETE FROM subtask WHERE id = :id")
+    suspend fun deleteSubtask(id: Int)
+
+    @Query("UPDATE subtask SET isCompleted = :isCompleted WHERE id = :id")
+    suspend fun updateSubtaskStatus(id: Int, isCompleted: Boolean)
 }

@@ -134,6 +134,44 @@ fun DashboardScreen(
                             tint = AppTheme.colors.primary
                         )
                     }
+
+                    Spacer(modifier = modifier.width(AppTheme.dimensions.paddingMedium))
+
+                    IconButton(
+                        onClick = {
+                            actions.gotoStatistics.invoke().run {
+                                val statsBundle = bundleOf(
+                                    "stats_button" to "Clicked Statistics button from Dashboard"
+                                )
+                                viewModel.firebaseLogEvent("dashboard_stats_button", statsBundle)
+                            }
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_about),
+                            contentDescription = stringResource(R.string.text_statistics),
+                            tint = AppTheme.colors.primary
+                        )
+                    }
+
+                    Spacer(modifier = modifier.width(AppTheme.dimensions.paddingMedium))
+
+                    IconButton(
+                        onClick = {
+                            actions.gotoBackup.invoke().run {
+                                val backupBundle = bundleOf(
+                                    "backup_button" to "Clicked Backup button from Dashboard"
+                                )
+                                viewModel.firebaseLogEvent("dashboard_backup_button", backupBundle)
+                            }
+                        }
+                    ) {
+                        Icon(
+                            painter = painterResource(id = R.drawable.ic_about),
+                            contentDescription = stringResource(R.string.text_backup),
+                            tint = AppTheme.colors.primary
+                        )
+                    }
                 },
                 backgroundColor = AppTheme.colors.background, elevation = 0.dp
             )

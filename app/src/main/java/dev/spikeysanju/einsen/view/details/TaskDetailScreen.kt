@@ -42,6 +42,7 @@ import androidx.compose.material.Icon
 import androidx.compose.material.IconButton
 import androidx.compose.material.Scaffold
 import androidx.compose.material.Text
+import androidx.compose.material.TextField
 import androidx.compose.material.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -66,15 +67,19 @@ import dev.spikeysanju.einsen.components.BottomCTA
 import dev.spikeysanju.einsen.components.ChipView
 import dev.spikeysanju.einsen.components.EmojiPlaceHolder
 import dev.spikeysanju.einsen.components.InfoCard
+import dev.spikeysanju.einsen.components.SubtaskItem
 import dev.spikeysanju.einsen.model.task.Priority
+import dev.spikeysanju.einsen.model.task.Subtask
 import dev.spikeysanju.einsen.model.task.task
 import dev.spikeysanju.einsen.navigation.MainActions
 import dev.spikeysanju.einsen.ui.theme.apptheme.AppTheme
 import dev.spikeysanju.einsen.utils.viewstate.SingleViewState
+import dev.spikeysanju.einsen.utils.viewstate.SubtaskViewState
 import dev.spikeysanju.einsen.view.animationviewstate.AnimationViewState
 import dev.spikeysanju.einsen.view.animationviewstate.ScreenState
 import dev.spikeysanju.einsen.view.viewmodel.MainViewModel
 import dev.spikeysanju.einsen.workers.cancelReminder
+import kotlinx.coroutines.launch
 import java.util.*
 
 @Composable
@@ -116,6 +121,9 @@ fun TaskDetailsScreen(
             }
         )
     }
+
+    var newSubtaskTitle by remember { mutableStateOf("") }
+    val subtaskViewState by viewModel.subtasks.collectAsState()
 
     Scaffold(
         topBar = {
@@ -244,6 +252,11 @@ fun TaskDetailsScreen(
                     val task = result.task
                     taskState = task
 
+                    // load subtasks for this task
+                    LaunchedEffect(key1 = task.id) {
+                        viewModel.getSubtasks(task.id)
+                    }
+
                     item {
                         Box(
                             modifier = modifier
@@ -329,6 +342,109 @@ fun TaskDetailsScreen(
                                         title = stringResource(R.string.text_importance),
                                         value = task.importance.toString(),
                                         modifier = weight
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    // Subtasks section
+                    item {
+                        Column(
+                            modifier = modifier
+                                .fillMaxWidth()
+                                .padding(
+                                    start = AppTheme.dimensions.paddingXL,
+                                    end = AppTheme.dimensions.paddingXL,
+                                    bottom = AppTheme.dimensions.paddingXXL,
+                                    top = AppTheme.dimensions.paddingXXL
+                                )
+                        ) {
+                            Text(
+                                text = stringResource(R.string.text_subtasks),
+                                style = AppTheme.typography.subtitle,
+                                color = AppTheme.colors.text,
+                                modifier = Modifier.padding(bottom = 8.dp)
+                            )
+
+                            when (subtaskViewState) {
+                                is SubtaskViewState.Success -> {
+                                    val subtasks = subtaskViewState.subtasks
+                                    if (subtasks.isEmpty()) {
+                                        Text(
+                                            text = stringResource(R.string.text_no_subtasks),
+                                            style = AppTheme.typography.caption,
+                                            color = AppTheme.colors.text.copy(alpha = 0.6f)
+                                        )
+                                    } else {
+                                        LazyColumn(
+                                            modifier = modifier.fillMaxWidth()
+                                        ) {
+                                            items(subtasks) { subtask ->
+                                                SubtaskItem(
+                                                    subtask = subtask,
+                                                    onCheckedChange = { isCompleted ->
+                                                        viewModel.updateSubtaskStatus(subtask.id, isCompleted)
+                                                    },
+                                                    onDelete = {
+                                                        viewModel.deleteSubtask(subtask.id)
+                                                    },
+                                                    modifier = Modifier.fillMaxWidth()
+                                                )
+                                            }
+                                        }
+                                    }
+                                }
+                                is SubtaskViewState.Error -> {
+                                    Text(
+                                        text = stringResource(R.string.text_error_load_subtasks),
+                                        style = AppTheme.typography.caption,
+                                        color = AppTheme.colors.error
+                                    )
+                                }
+                                else -> {
+                                    Text(
+                                        text = stringResource(R.string.text_loading_subtasks),
+                                        style = AppTheme.typography.caption,
+                                        color = AppTheme.colors.text.copy(alpha = 0.6f)
+                                    )
+                                }
+                            }
+
+                            Spacer(modifier = modifier.height(AppTheme.dimensions.paddingLarge))
+
+                            Row(
+                                modifier = modifier.fillMaxWidth(),
+                                horizontalArrangement = Arrangement.spacedBy(8.dp)
+                            ) {
+                                TextField(
+                                    value = newSubtaskTitle,
+                                    onValueChange = { newSubtaskTitle = it },
+                                    placeholder = {
+                                        Text(text = stringResource(R.string.text_add_subtask_hint))
+                                    },
+                                    modifier = Modifier.weight(1f)
+                                )
+
+                                IconButton(
+                                    onClick = {
+                                        if (newSubtaskTitle.isNotBlank()) {
+                                            viewModelScope.launch {
+                                                val id = viewModel.insertSubtask(
+                                                    Subtask(
+                                                        taskId = taskState.id,
+                                                        title = newSubtaskTitle
+                                                    )
+                                                )
+                                                newSubtaskTitle = ""
+                                            }
+                                        }
+                                    }
+                                ) {
+                                    Icon(
+                                        imageVector = androidx.compose.material.icons.filled.Add,
+                                        contentDescription = stringResource(R.string.text_add_subtask),
+                                        tint = AppTheme.colors.primary
                                     )
                                 }
                             }
